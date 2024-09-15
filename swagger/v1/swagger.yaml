@@ -1,0 +1,79 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/users":
+    post:
+      summary: create user
+      tags:
+      - Registrations
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - password
+              properties:
+                user:
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+        required: true
+  "/users/sign_in":
+    post:
+      summary: Creates a session
+      tags:
+      - sessions
+      parameters: []
+      responses:
+        '201':
+          description: session established
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+              required:
+              - email
+              - password
+        required: true
+  "/users/sign_out":
+    delete:
+      summary: End user session
+      tags:
+      - sessions
+      responses:
+        '200':
+          description: session ended
+        '401':
+          description: no user logged on
+components:
+  securitySchemes:
+    CSRF_Protection:
+      description: CSRF token
+      type: apiKey
+      name: X-CSRF-Token
+      in: header
+security:
+- CSRF_Protection: []
+servers:
+- url: ''
